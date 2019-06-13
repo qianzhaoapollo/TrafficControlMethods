@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter.font as tkFont
+import kernel as ke
 
 master = Tk()
 
@@ -44,17 +45,47 @@ e3 = Entry(frame,width=20,textvariable=v4,state="readonly").grid(row=r,column=1)
 
 e5 = Entry(frame,width=20,textvariable=v5,state="readonly").grid(row=r+1,column=1);
 
-e5 = Entry(frame,width=20,textvariable=v6,state="readonly").grid(row=r+2,column=1);
+e6 = Entry(frame,width=20,textvariable=v6,state="readonly").grid(row=r+2,column=1);
+
+
+def string_to_int(input_string):
+    buff = []
+    temp = 0
+    for each in input_string:
+        if each == ' ' or each == ',':
+            temp = 0
+            continue
+        else:
+            temp = temp*10 + int(each)
+            # buff.append(temp)
+    
+    buff.append(temp)
+    
+    return buff
+
 
 def calc():
-    #result = int(v1.get()) + int(v2.get())
-    C = int(v1.get())
-    distance = v2.get()
-    green_rate = v3.get()
-    v4.set(distance)
+    # 信号周期
+    input_string1 = v1.get()
+    cycle_temp = 0
+    for each in input_string1:
+        cycle_temp = cycle_temp*10 + int(each)
+    print(cycle_temp) 
+    
+    # 交叉口间距
+    input_string2 = v2.get()
+    distance = string_to_int(input_string2)
     print(distance)
-    for each in distance:
-        print(each)
+    
+    # 各交叉口绿信比
+    input_string3 = v3.get()
+    green_rate = string_to_int(input_string3)
+    print(green_rate)
+    
+    valid = ke.coordination(cycle_temp, distance, green_rate)    
+    
+    v4.set(valid)
+
     
 Button(frame,text='顺输入方向单向协调：',command=calc).grid(row=r,column=0,pady=10);r+=1
 Button(frame,text='逆输入方向单向协调：',command=calc).grid(row=r,column=0,pady=10);r+=1
